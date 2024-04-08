@@ -54,67 +54,87 @@ function ToDoView() {
     }
   };
 
-  const renderStatusStyle = (status) => {
-    return {
-      flexBasis: "33%",
-      backgroundColor: status === "done" ? "green" : "red",
-      textAlign: "right",
-      padding: "5px",
-      borderTopRightRadius: "5px",
-      borderBottomRightRadius: "5px",
-      textAlign: "center",
-      cursor: "pointer",
-    };
-  };
-
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+ return (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    }}
+  >
+    <div
+      style={{
+        width: "50%", 
+        padding: "10px",
+        borderRadius: "5px", 
+        backgroundColor: "white",
+        overflowY: "auto",
+        height: "60vh",
+        border: "1px solid black"
         }}
-      >
-        {todos
-          .filter((todo) => todo.status === "not done")
-          .map((todo) => (
+    >
+      {todos
+        .filter((todo) => todo.status === "not done")
+        .map((todo) => (
+          <div
+            key={todo._id}
+            style={{
+              border: "1px solid black",
+              margin: "10px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "5px",
+              borderRadius: "5px", 
+            }}
+          >
+            <div style={{ flex: "1" }}>{todo.text}</div>
             <div
-              key={todo._id}
               style={{
-                borderRadius: "5px",
-                width: "50%",
-                border: "1px solid black",
-                margin: "10px",
-                display: "flex",
+                flexBasis: "33%",
+                textAlign: "right",
+                padding: "5px",
+                textAlign: "center",
+                cursor: "pointer",
+                backgroundColor: "lightgrey",
+                borderRadius: "5px", 
+                padding: "5px",
+                cursor: "pointer",
               }}
+              onMouseOver={(e) => (e.target.textContent = "Complete ?")}
+              onMouseOut={(e) =>
+                (e.target.textContent = todo.status === "done" ? "✅" : "❌")
+              }
+              onClick={() =>
+                handleStatusChange(
+                  todo._id,
+                  todo.status === "done" ? "not done" : "done"
+                )
+              }
             >
-              <div style={{ flex: "1", padding: "5px" }}>{todo.text}</div>
-              <div
-                style={renderStatusStyle(todo.status)}
-                onClick={() =>
-                  handleStatusChange(
-                    todo._id,
-                    todo.status === "done" ? "not done" : "done"
-                  )
-                }
-              >
-                {todo.status}
-              </div>
-              <span
-                role="img"
-                aria-label="delete"
-                style={{ cursor: "pointer" }}
-                onClick={() => handleDeleteTodo(todo._id)}
-              >
-                🗑️
-              </span>
+             {todo.status === "done" ? "✅" : "❌"}
             </div>
-          ))}
-      </div>
-      <AddTodoComponent onAddTodo={handleAddTodo} />
-    </>
-  );
+            <span
+              role="img"
+              aria-label="delete"
+              style={{
+                cursor: "pointer",
+                padding: "5px",
+                marginLeft: "10px",
+                borderRadius: "5px",
+              }}
+              title="Delete ?"
+              onClick={() => handleDeleteTodo(todo._id)}
+            >
+              🗑️
+            </span>
+          </div>
+        ))}
+           </div>
+       <AddTodoComponent onAddTodo={handleAddTodo} />
+
+  </div>
+);
 }
 
 export default ToDoView;

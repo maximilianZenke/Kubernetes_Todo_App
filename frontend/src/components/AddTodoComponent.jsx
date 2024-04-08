@@ -28,20 +28,20 @@ function AddTodoComponent({ onAddTodo }) {
   };
 
   return (
-    <form style={{ display: "flex", justifyContent: "center" }}>
+    <form style={{ display: "flex", justifyContent: "center", paddingTop: "15px" }}>
       <input
         type="text"
-        placeholder="Todo text"
+        placeholder="what needs to be done ?"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        style={{ borderRadius: "5px", marginRight: "10px" }}
+        style={{ borderRadius: "5px", marginRight: "10px", padding: "5px" }}
       />
       <button
         type="submit"
         onClick={handleOnSubmit}
-        style={{ borderRadius: "5px" }}
+        style={{ borderRadius: "5px", padding: "5px", backgroundColor: "lightgreen"}}
       >
-        Submit
+        Add TODO
       </button>
     </form>
   );

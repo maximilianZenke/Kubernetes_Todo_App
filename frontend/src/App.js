@@ -4,7 +4,8 @@ import ToDoView from './components/ToDoView';
 function App() {
     return (
         <div>
-            <ToDoView />
+          <h1 style={{textAlign: "center"}}> TODO App </h1> 
+          <ToDoView />
         </div>
     );
 }
