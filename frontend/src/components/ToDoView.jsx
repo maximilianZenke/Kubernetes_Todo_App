@@ -3,10 +3,15 @@ import AddTodoComponent from "./AddTodoComponent";
 
 function ToDoView() {
   const [todos, setTodos] = useState([]);
+  const [showAllTodos, setShowAllTodos] = useState(false);
 
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  const toggleShowAll = () => {
+    setShowAllTodos(!showAllTodos);
+  };
 
   const fetchTodos = async () => {
     try {
@@ -54,88 +59,104 @@ function ToDoView() {
     }
   };
 
- return (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    }}
-  >
+  return (
     <div
       style={{
-        width: "50%", 
-        padding: "10px",
-        borderRadius: "5px", 
-        backgroundColor: "white",
-        overflowY: "auto",
-        height: "60vh",
-        border: "1px solid black"
-        }}
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
-      {todos
-        .filter((todo) => todo.status === "not done")
-        .map((todo) => (
-          <div
-            key={todo._id}
-            style={{
-              border: "1px solid black",
-              margin: "10px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "5px",
-              borderRadius: "5px", 
-            }}
-          >
-            <div style={{ flex: "1" }}>{todo.text}</div>
+      <div
+        style={{
+          width: "50%",
+          padding: "10px",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          overflowY: "auto",
+          height: "60vh",
+          border: "1px solid black",
+        }}
+      >
+        {todos
+          .filter((todo) => showAllTodos || todo.status === "not done")
+          .map((todo) => (
             <div
+              key={todo._id}
               style={{
-                flexBasis: "33%",
-                textAlign: "right",
+                border: "1px solid black",
+                margin: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
                 padding: "5px",
-                textAlign: "center",
-                cursor: "pointer",
-                backgroundColor: "lightgrey",
-                borderRadius: "5px", 
-                padding: "5px",
-                cursor: "pointer",
-              }}
-              onMouseOver={(e) => (e.target.textContent = "Complete ?")}
-              onMouseOut={(e) =>
-                (e.target.textContent = todo.status === "done" ? "✅" : "❌")
-              }
-              onClick={() =>
-                handleStatusChange(
-                  todo._id,
-                  todo.status === "done" ? "not done" : "done"
-                )
-              }
-            >
-             {todo.status === "done" ? "✅" : "❌"}
-            </div>
-            <span
-              role="img"
-              aria-label="delete"
-              style={{
-                cursor: "pointer",
-                padding: "5px",
-                marginLeft: "10px",
                 borderRadius: "5px",
               }}
-              title="Delete ?"
-              onClick={() => handleDeleteTodo(todo._id)}
             >
-              🗑️
-            </span>
-          </div>
-        ))}
-           </div>
-       <AddTodoComponent onAddTodo={handleAddTodo} />
-
-  </div>
-);
+              <div style={{ flex: "1" }}>{todo.text}</div>
+              <div
+                style={{
+                  flexBasis: "25%",
+                  textAlign: "right",
+                  padding: "5px",
+                  paddingLeft: "10px",
+                  textAlign: "right",
+                  cursor: "pointer",
+                  backgroundColor: "lightgrey",
+                  borderRadius: "5px",
+                  padding: "5px",
+                  cursor: "pointer",
+                }}
+                onMouseOver={(e) => (e.target.textContent = "Complete ?")}
+                onMouseOut={(e) =>
+                  (e.target.textContent = todo.status === "done" ? "✅" : "❌")
+                }
+                onClick={() =>
+                  handleStatusChange(
+                    todo._id,
+                    todo.status === "done" ? "not done" : "done"
+                  )
+                }
+              >
+                {todo.status === "done" ? "✅" : "❌"}
+              </div>
+              <span
+                role="img"
+                aria-label="delete"
+                style={{
+                  cursor: "pointer",
+                  padding: "5px",
+                  marginLeft: "10px",
+                  borderRadius: "5px",
+                }}
+                title="Delete ?"
+                onClick={() => handleDeleteTodo(todo._id)}
+              >
+                🗑️
+              </span>
+            </div>
+          ))}
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <button
+          onClick={toggleShowAll}
+          style={{
+            borderStyle: "outset",
+            backgroundColor: "#f7ed2a",
+            width: "125px",
+            borderRadius: "5px",
+            marginRight: "10px",
+            border: "2px solid black",
+            padding: "5px",
+            marginTop: "15px",
+          }}
+        >
+          {showAllTodos ? "Show not done" : "Show all"}
+        </button>
+        <AddTodoComponent onAddTodo={handleAddTodo} />
+      </div>
+    </div>
+  );
 }
 
 export default ToDoView;
-
