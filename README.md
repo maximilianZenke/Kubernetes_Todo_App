@@ -29,6 +29,7 @@ The client provides the TODO app's UI. Navigate into the frontend folder and run
 to start the client. 
 ```cmd
 cd frontend 
+npm install 
 npm start
 ```
 The client is available at *localhost:3000* 
