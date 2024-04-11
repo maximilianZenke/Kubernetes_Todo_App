@@ -6,6 +6,28 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - my_network
+
+  frontend:
+    build:
+      context: ../
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+
+  backend:
+    build:
+      context: ../
+    ports:
+      - "5000:5000"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+
 volumes:
   mongodb_data:
 
