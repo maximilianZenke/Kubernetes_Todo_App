@@ -1,7 +1,8 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo
+  db:
+    image: 'mongo'
+    container_name: db
     ports:
       - "27017:27017"
     volumes:
@@ -11,23 +12,33 @@ services:
 
   frontend:
     build:
-      context: ../
+      context: ../frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     networks:
       - my_network
+    depends_on:
+      - backend
 
   backend:
     build:
-      context: ../
+      context: ../backend
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     networks:
       - my_network
+    depends_on:
+      - db
 
 networks:
   my_network:
+    driver: bridge
 
 volumes:
   mongodb_data:
+  node_modules: 
+  web-root: 
+    driver: local
 
