@@ -1,6 +1,29 @@
 # TODO App 
 
 ## How to start the app 
+
+### Docker-Compose 
+As required in exercise 2, the whole application is containerized: Images for the react-client and nodejs-server are defined via a *Dockerfile* in their respective subdirectories ./frontend and ./backend. The setup for the mongodb, as well as the orchestration of the multi-container-application is handled with docker-compose and described in a docker-compose.yml file in the root directory of the project. Run the following commands from the root directory ./Cloud_computing_mzenke to build the containers and start the containerized setup. 
+
+```cmd
+docker compose build 
+docker compose up 
+```
+
+After completing the commands, three containers should be running ( client, server and db ). This can be tested via 
+```cmd
+docker ps 
+```
+and should display something like
+```cmd
+# docker ps
+CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS          PORTS                      NAMES
+407473f52b28   cloud_computing_mzenke-frontend   "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:3000->3000/tcp     cloud_computing_mzenke-frontend-1
+dc41ede2617c   cloud_computing_mzenke-backend    "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:5000->5000/tcp     cloud_computing_mzenke-backend-1
+6cc18deb4e2c   mongo                             "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:27017->27017/tcp   db
+```
+
+*actions below are deprecated and should only be regarded as documentation for exercise 1* 
 ### MongoDB 
 
 To run the database, docker/ docker-desktop needs to be installed. 
