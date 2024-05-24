@@ -32,6 +32,17 @@ services:
     depends_on:
       - db
 
+  backend2:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports: 
+      - "5001:5000"
+    networks: 
+      - my_network
+    depends_on: 
+      - db
+
 networks:
   my_network:
     driver: bridge
