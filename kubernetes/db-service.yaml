@@ -12,7 +12,6 @@ spec:
     - name: "27017"
       port: 27017
       targetPort: 27017
-      nodePort: 32003
-  type: NodePort
+  type: ClusterIP
   selector:
     io.kompose.service: db
