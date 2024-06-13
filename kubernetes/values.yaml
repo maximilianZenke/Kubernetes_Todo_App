@@ -1,0 +1,34 @@
+replicaSet:
+  enabled: false  
+
+persistence:
+  enabled: true
+  size: 100Mi
+  storageClass: ""  
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+service:
+  type: ClusterIP
+  port: 27017
+
+auth:
+  enabled: false 
+commonLabels:
+  io.kompose.service: db
+
+primary:
+  podLabels:
+    io.kompose.service: db
+  podAnnotations:
+    kompose.cmd: C:\Users\Admin\AppData\Local\kompose\kompose.exe convert
+    kompose.version: 1.34.0 (cbf2835db)
+  persistence:
+    existingClaim: mongodb-data
+
