@@ -7,7 +7,7 @@ function AddTodoComponent({ onAddTodo }) {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (text != "") {
-      let result = await fetch("http://localhost:5000/addTodo", {
+      let result = await fetch("http://backend.local/addTodo", {
         method: "post",
         body: JSON.stringify({ text, status }),
         headers: {

@@ -15,7 +15,7 @@ function ToDoView() {
 
   const fetchTodos = async () => {
     try {
-      const response = await fetch("http://localhost:5000/todos");
+      const response = await fetch("http://backend.local/todos"); 
       const data = await response.json();
       setTodos(data);
     } catch (error) {
@@ -29,7 +29,7 @@ function ToDoView() {
 
   const handleStatusChange = async (todoId, newStatus) => {
     try {
-      await fetch(`http://localhost:5000/todos/${todoId}`, {
+      await fetch(`http://backend.local/todos/${todoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function ToDoView() {
 
   const handleDeleteTodo = async (todoId) => {
     try {
-      await fetch(`http://localhost:5000/todos/${todoId}`, {
+      await fetch(`http://backend.local/todos/${todoId}`, {
         method: "DELETE",
       });
       const updatedTodos = todos.filter((todo) => todo._id !== todoId);
