@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cc-helm-chart.fullname" . }}-backend
+  labels:
+    io.kompose.service: backend
+  {{- include "cc-helm-chart.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: C:\Users\Admin\AppData\Local\kompose\kompose.exe convert
+    kompose.version: 1.34.0 (cbf2835db)
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+    {{- include "cc-helm-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: backend
+      {{- include "cc-helm-chart.selectorLabels" . | nindent 8 }}
+      annotations:
+        kompose.cmd: C:\Users\Admin\AppData\Local\kompose\kompose.exe convert
+        kompose.version: 1.34.0 (cbf2835db)
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.backend.backend.image.repository }}:{{ .Values.backend.backend.image.tag
+          | default .Chart.AppVersion }}
+        name: backend
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
