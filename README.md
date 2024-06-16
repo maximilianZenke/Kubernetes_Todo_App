@@ -67,6 +67,20 @@ db-7f9bb8c796-dnmt9                      1/1     Running   0          108m
 Access the frontend by typing "http://frontend.local/" in your browser. 
 Access the backend by typing "http://backend.local/todos" in your browser. 
 
+### Kubeview 
+Kubeview is an open-source visualization tool for kubernetes cluster. Follow the commands below to reveive a visual representation of the apps' cluster via kubeviews' web-ui. 
+```cmd
+cd ./kubeview/charts
+helm install kubeview ./kubeview -f myvalues.yaml
+kubectl port-forward svc/kubeview -n default 8080:80
+```
+Access the Kubeview web-ui at localhost:8080. 
+❗While accessing Kubeview all endpoints will only point to kubeview. This is due to the fact that the ingress controller uses port 80 as well. 
+If you want to access the application again, uninstall kubeview 
+```cmd
+helm uninstall kubeview 
+```
+
 ## How to start the app for exercise 1, 2 and 3
 
 ### Docker-Compose 
