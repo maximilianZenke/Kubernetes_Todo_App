@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cc-helm-chart.fullname" . }}-backend
+  labels:
+  {{- include "cc-helm-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.backend.type }}
+  selector:
+    io.kompose.service: backend
+  {{- include "cc-helm-chart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.backend.ports | toYaml | nindent 2 }}

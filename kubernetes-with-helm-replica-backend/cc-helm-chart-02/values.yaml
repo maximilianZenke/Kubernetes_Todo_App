@@ -1,0 +1,77 @@
+backend:
+  backend:
+    image:
+      repository: mzenke/cloud-computing
+      tag: cc-be-image
+      pullPolicy: Always
+  ports:
+  - nodePort: 32001
+    port: 5000
+    targetPort: 5000
+  replicas: 2
+  type: NodePort
+
+frontend:
+  frontend:
+    image:
+      repository: mzenke/cloud-computing
+      tag: cc-fe-image
+      pullPolicy: Always
+  ports:
+  - nodePort: 32000
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  replicas: 1
+  type: NodePort
+
+mongodb:
+  fullnameOverride: db
+  image:
+    repository: bitnami/mongodb
+    tag: "6.0.5-debian-11-r16"
+  replicaSet:
+    enabled: false
+  persistence:
+    enabled: true
+    size: 100Mi
+    storageClass: "standard"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  service:
+    type: ClusterIP
+    port: 27017
+  auth:
+    enabled: false
+  primary:
+    podLabels:
+      io.kompose.service: db
+    podAnnotations:
+      kompose.cmd: C:\Users\Admin\AppData\Local\kompose\kompose.exe convert
+      kompose.version: 1.34.0 (cbf2835db)
+    persistence:
+      existingClaim: mongodb-data
+  livenessProbe:
+    exec:
+      command:
+      - /bitnami/scripts/ping-mongodb.sh
+    initialDelaySeconds: 60  
+    timeoutSeconds: 20      
+    periodSeconds: 30
+    failureThreshold: 10
+  readinessProbe:
+    exec:
+      command:
+      - /bitnami/scripts/readiness-probe.sh
+    initialDelaySeconds: 30 
+    timeoutSeconds: 10       
+    periodSeconds: 15
+    failureThreshold: 6
+
+kubernetesClusterDomain: cluster.local
+

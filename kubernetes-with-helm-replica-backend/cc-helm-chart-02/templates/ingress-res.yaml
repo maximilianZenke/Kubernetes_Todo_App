@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "cc-helm-chart.fullname" . }}-cc-ingress-ressource
+  labels:
+  {{- include "cc-helm-chart.labels" . | nindent 4 }}
+spec:
+  rules:
+  - host: frontend.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: '{{ include "cc-helm-chart.fullname" . }}-frontend'
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  - host: backend.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: '{{ include "cc-helm-chart.fullname" . }}-backend'
+            port:
+              number: 5000
+        path: /todos
+        pathType: Prefix
+      - backend:
+          service:
+            name: '{{ include "cc-helm-chart.fullname" . }}-backend'
+            port:
+              number: 5000
+        path: /
+        pathType: Prefix
+  - host: backend2.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: '{{ include "cc-helm-chart.fullname" . }}-backend2'
+            port:
+              number: 5001
+        path: /
+        pathType: Prefix

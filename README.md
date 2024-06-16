@@ -1,6 +1,73 @@
+
 # TODO App 
 
-## How to start the app 
+### ❗ Exercise 4 Information  
+This repo contains three different versions of the solution for exercise 4: 
+1. kubernetes
+    --> my first solution containing the deployments and services for my app. 
+2. kubernetes-with-helm 
+    --> second solution containing the helm-chart-transformation of the first solution. 
+3. kubernetes-with-helm-replica-set 
+    --> **FINAL SOLUTION**  uses one backend-service with two replicas instead of two deployments, backend and backend2 ( which was my not-optimal-solution for exercixe 3 ). Besides this change, the final solution is the same as the kubernetes-with-helm solution. 
+
+## How to start the app for exercise 4 
+
+### Minikube 
+Start minikube. This may take some time 
+```cmd
+minikube start 
+```
+Enable minikubes' ingress-addon. This enables your host to directly communicate with services inside a kubernetes cluster. 
+```cmd
+minikube addons enable ingress 
+```
+Finish the ingress-setup by adding the hosts for the todo-app to your etc/hosts to ensure functioning DNS-resolving between the host system and the cluster. Add those entries to your etc/hosts 
+```txt
+# ingress without minikube tunnel 
+192.168.49.2 frontend.local
+192.168.49.2 backend.local
+192.168.49.2 backend2.local
+
+# ingress with minikube tunnel 
+127.0.0.1 frontend.local
+127.0.0.1 backend.local
+127.0.0.1 backend2.local
+```
+Finish the setup by opening a minikube tunnel
+```cmd
+minikube tunnel
+```
+❗Do not close the window with the tunnel. 
+
+### Helm 
+
+The whole application can be installed using a helm chart. Navigate into the directory including the final solution
+```cmd
+cd .\kubernetes-with-helm-replica-backend\cc-helm-chart-02\
+```
+Start the application
+```cmd
+helm install cc-helm-chart ./
+```
+Startup will take some time. You can check on the status of your cluster using 
+```cmd
+kubectl get pods 
+```
+If everything is done, the output should look like this: 
+```cmd
+# kubectl get pods
+NAME                                     READY   STATUS    RESTARTS   AGE
+cc-helm-chart-backend-54dc9db58b-7vnwf   1/1     Running   0          108m
+cc-helm-chart-backend-54dc9db58b-pw54j   1/1     Running   0          108m
+cc-helm-chart-frontend-948f56cbb-mn6r8   1/1     Running   0          108m
+db-7f9bb8c796-dnmt9                      1/1     Running   0          108m
+```
+
+### Access to the application 
+Access the frontend by typing "http://frontend.local/" in your browser. 
+Access the backend by typing "http://backend.local/todos" in your browser. 
+
+## How to start the app for exercise 1, 2 and 3
 
 ### Docker-Compose 
 As required in exercise 2, the whole application is containerized: Images for the react-client and nodejs-server are defined via a *Dockerfile* in their respective subdirectories ./frontend and ./backend. The setup for the mongodb, as well as the orchestration of the multi-container-application is handled with docker-compose and described in a docker-compose.yml file in the root directory of the project. Run the following commands from the root directory ./Cloud_computing_mzenke to build the containers and start the containerized setup. 
