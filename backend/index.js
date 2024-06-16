@@ -1,7 +1,3 @@
-// the basic idea for this setup was taken from 
-// https://www.geeksforgeeks.org/how-to-connect-mongodb-with-reactjs/#:%7E:text=First%2C%20we%20create%20a%20react,MongoDB
-// and modified to fit the requirements of the exercise
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); 
@@ -10,15 +6,33 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// former mongodb://localhost:.... 
-mongoose.connect('mongodb://db:27017/Todo-Db', {
+const dbUri = 'mongodb://db:27017/Todo-Db';
+const connectionOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => {
-    console.log('Connected to Todo-Db database');
-}).catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-});
+};
+
+let isConnected = false;
+const maxRetries = 24; 
+let retryCount = 0;
+
+const connectWithRetry = () => {
+    mongoose.connect(dbUri, connectionOptions).then(() => {
+        console.log('Connected to Todo-Db database');
+        isConnected = true;
+    }).catch((error) => {
+        retryCount++;
+        console.error(`Error connecting to MongoDB (attempt ${retryCount}):`, error);
+        if (retryCount < maxRetries) {
+            setTimeout(connectWithRetry, 5000);
+        } else {
+            console.error('Failed to connect to MongoDB after multiple attempts. Exiting...');
+            process.exit(1);
+        }
+    });
+};
+
+connectWithRetry();
 
 const ToDoSchema = new mongoose.Schema({
     text: {
@@ -37,6 +51,18 @@ const ToDoSchema = new mongoose.Schema({
 });
 
 const ToDo = mongoose.model('ToDo', ToDoSchema);
+
+const startServer = () => {
+    if (isConnected) {
+        app.listen(5000, () => {
+            console.log('Server is running on port 5000');
+        });
+    } else {
+        setTimeout(startServer, 1000);
+    }
+};
+
+startServer();
 
 app.get("/", (req, res) => {
     res.send("App is Working");
@@ -90,6 +116,3 @@ app.delete('/todos/:id', async (req, res) => {
     }
 });
 
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
-});
