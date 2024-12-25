@@ -1,16 +1,14 @@
-
 # TODO App 
 
-### ❗ Exercise 4 Information  
-This repo contains three different versions of the solution for exercise 4: 
+This repo contains three different solutions for the applications' deployment:  
 1. kubernetes
     --> my first solution containing the deployments and services for my app. 
 2. kubernetes-with-helm 
     --> second solution containing the helm-chart-transformation of the first solution. 
 3. kubernetes-with-helm-replica-set 
-    --> **FINAL SOLUTION**  uses one backend-service with two replicas instead of two deployments, backend and backend2 ( which was my not-optimal-solution for exercixe 3 ). Besides this change, the final solution is the same as the kubernetes-with-helm solution. 
+    --> uses one backend-service with two replicas instead of two deployments, backend and backend2. Besides this change, the final solution is the same as the kubernetes-with-helm solution. 
 
-## How to start the app for exercise 4 
+## How to start the cluster 
 
 ### Minikube 
 Start minikube. This may take some time 
@@ -63,7 +61,7 @@ cc-helm-chart-frontend-948f56cbb-mn6r8   1/1     Running   0          108m
 db-7f9bb8c796-dnmt9                      1/1     Running   0          108m
 ```
 
-### Access to the application 
+### Access the application 
 Access the frontend by typing "http://frontend.local/" in your browser. 
 Access the backend by typing "http://backend.local/todos" in your browser. 
 
@@ -81,10 +79,10 @@ If you want to access the application again, uninstall kubeview
 helm uninstall kubeview 
 ```
 
-## How to start the app for exercise 1, 2 and 3
+## How to start without the cluster
 
 ### Docker-Compose 
-As required in exercise 2, the whole application is containerized: Images for the react-client and nodejs-server are defined via a *Dockerfile* in their respective subdirectories ./frontend and ./backend. The setup for the mongodb, as well as the orchestration of the multi-container-application is handled with docker-compose and described in a docker-compose.yml file in the root directory of the project. Run the following commands from the root directory ./Cloud_computing_mzenke to build the containers and start the containerized setup. 
+The whole application is containerized: Images for the react-client and nodejs-server are defined via a *Dockerfile* in their respective subdirectories ./frontend and ./backend. The setup for the mongodb, as well as the orchestration of the multi-container-application is handled with docker-compose and described in a docker-compose.yml file in the root directory of the project. Run the following commands from the root directory ./Cloud_computing_mzenke to build the containers and start the containerized setup. 
 
 ```cmd
 docker compose build 
@@ -104,7 +102,6 @@ dc41ede2617c   cloud_computing_mzenke-backend    "docker-entrypoint.s…"   14 m
 6cc18deb4e2c   mongo                             "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:27017->27017/tcp   db
 ```
 
-*actions below are deprecated and should only be regarded as documentation for exercise 1* 
 ### MongoDB 
 
 To run the database, docker/ docker-desktop needs to be installed. 
@@ -138,9 +135,9 @@ npm start
 ```
 The client is available at *localhost:3000* 
 
-## Testing the Requirements 
+## Debugging  
 
-The TODO app has to fulfil a set of requirements. To check if all requirements are met, f.e. if the client truthfully edits/deletes/saves its TODOS, 
+To check if all requirements are met, f.e. if the client truthfully edits/deletes/saves its TODOS, 
 access to the MongoDB is needed. As the MongoDB is running in a docker container, this can be accomplished via 
 ```cmd 
 docker exec -it db-mongodb-1 mongosh
